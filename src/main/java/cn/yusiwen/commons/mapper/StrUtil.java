@@ -70,6 +70,12 @@ public class StrUtil {
         return out.toString();
     }
 
+    /**
+     * 尝试将字符串解析为Long类型的数值
+     *
+     * @param str 要解析的字符串
+     * @return 如果解析成功，返回包含Long值的Optional对象；如果解析失败，返回空的Optional对象
+     */
     public static Optional<Long> parseLong(String str) {
         try {
             return Optional.of(Long.valueOf(str));

@@ -16,25 +16,21 @@ import java.lang.annotation.Target;
  * {@code @JSONColumn(fields} = {"field1", "field2"})
  * private String exampleField;
  * </pre>
- * </p>
  *
  * <p>
  * 注解参数：
  * <ul>
  *     <li>fields：需要映射的 JSON 字段的名称数组。</li>
  * </ul>
- * </p>
  *
  * <p>
  * 注解目标：
  * <ul>
  *     <li>可以应用于类级别或字段级别。</li>
  * </ul>
- * </p>
  *
  * <p>
  * 运行时保留策略：注解信息会保留到运行时，可通过反射获取。
- * </p>
  *
  * @author Siwen Yu(yusiwen@gmail.com)
  * @since 1.0
@@ -44,5 +40,10 @@ import java.lang.annotation.Target;
 @Documented
 public @interface JSONColumn {
 
+    /**
+     * 定义需要映射的 JSON 字段名称数组。
+     *
+     * @return JSON 字段名称数组，如果未指定则返回空数组
+     */
     String[] fields() default {};
 }

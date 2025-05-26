@@ -14,7 +14,6 @@ import java.util.Map;
  *   <li>默认值处理 - 在对象为null时返回默认值</li>
  *   <li>基本类型判断 - 判断对象是否为基本类型或其数组</li>
  * </ul>
- * </p>
  *
  * @author Siwen Yu (yusiwen@gmail.com)
  * @since 1.0

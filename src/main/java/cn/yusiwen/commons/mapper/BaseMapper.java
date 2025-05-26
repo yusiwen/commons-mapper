@@ -25,7 +25,6 @@ import java.util.stream.Stream;
  * <p>
  * 此接口支持常见的操作如插入记录、根据主键查询等功能，同时为复杂 SQL 提供了定制化支持。
  * 开发者可以通过继承此接口，快速实现对实体类的基本 CRUD 操作，减少重复性代码。
- * </p>
  *
  * <p>
  * 特性：
@@ -35,7 +34,6 @@ import java.util.stream.Stream;
  *         定制 SQL 行为。</li>
  *     <li>通过泛型支持对不同实体类的扩展。</li>
  * </ul>
- * </p>
  *
  * <p>
  * 使用示例：
@@ -43,7 +41,6 @@ import java.util.stream.Stream;
  * public interface UserMapper extends BaseMapper&lt;UserEntity&gt; {
  * }
  * </pre>
- * </p>
  *
  * @param <S> 实体类类型，需继承自 {@link cn.yusiwen.commons.mapper.BaseEntity}
  * @author Siwen Yu (yusiwen@gmail.com)
@@ -51,10 +48,28 @@ import java.util.stream.Stream;
  */
 public interface BaseMapper<S extends BaseEntity> {
 
+
+    /**
+     * 插入一个新的实体对象到数据库中。
+     * <p>
+     * 该方法会自动忽略实体类中标记为主键的字段，适用于使用数据库自增主键的表。
+     * 插入成功后，数据库生成的主键值会自动回填到实体对象的id属性中。
+     *
+     * @param entity 要插入的实体对象，不能为null
+     */
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     @InsertProvider(type = InsertWithoutPrimaryKeySqlProvider.class, method = "sql")
     void insert(S entity);
 
+    /**
+     * 根据主键ID查询单条记录。
+     * <p>
+     * 该方法通过指定的主键ID从数据库中查询对应的记录，并将结果映射为实体对象。
+     * 如果未找到匹配的记录，则返回null。
+     *
+     * @param id 要查询的记录的主键ID
+     * @return 匹配的实体对象，如果未找到则返回null
+     */
     @SelectProvider(type = SelectOneSqlProvider.class, method = "sql")
     S queryById(Long id);
 
@@ -62,6 +77,17 @@ public interface BaseMapper<S extends BaseEntity> {
      * 插入provider
      */
     class InsertSqlProvider extends BaseSqlProviderSupport {
+
+        /**
+         * 构造一个新的插入SQL提供者实例。
+         * <p>
+         * 该构造函数创建一个用于生成INSERT SQL语句的提供者对象。
+         * 它继承自BaseSqlProviderSupport，用于处理通用的SQL生成逻辑。
+         */
+        public InsertSqlProvider() {
+            // this constructor is empty
+        }
+
         /**
          * sql
          *
@@ -80,12 +106,29 @@ public interface BaseMapper<S extends BaseEntity> {
         }
     }
 
+    /**
+     * 不包含主键的插入SQL提供者类
+     * <p>
+     * 此类用于生成不包含主键字段的INSERT SQL语句。主要用于那些主键由数据库自动生成的表
+     * （例如使用自增主键的表）。它会排除实体类中标记为主键的字段，只插入其他字段的值。
+     */
     class InsertWithoutPrimaryKeySqlProvider extends BaseSqlProviderSupport {
+
         /**
-         * sql
+         * 创建一个新的InsertWithoutPrimaryKeySqlProvider实例。
+         * <p>
+         * 此构造函数用于初始化一个不包含主键的SQL插入语句提供者。
+         * 主要用于处理那些使用数据库自动生成主键的表的插入操作。
+         */
+        public InsertWithoutPrimaryKeySqlProvider() {
+            // this constructor is empty
+        }
+
+        /**
+         * 生成不包含主键的INSERT SQL语句
          *
-         * @param context context
-         * @return sql
+         * @param context MyBatis提供的上下文对象，包含了Mapper接口的相关信息
+         * @return 生成的INSERT SQL语句
          */
         public String sql(ProviderContext context) {
             TableInfo table = tableInfo(context);
@@ -104,6 +147,17 @@ public interface BaseMapper<S extends BaseEntity> {
      * 单条数据查询
      */
     class SelectOneSqlProvider extends BaseSqlProviderSupport {
+
+        /**
+         * 创建一个新的SelectOneSqlProvider实例。
+         * <p>
+         * 此构造函数用于初始化单条数据查询的SQL提供者。
+         * 主要用于生成查询单条记录的SQL语句。
+         */
+        public SelectOneSqlProvider() {
+            // this constructor is empty
+        }
+        
         /**
          * sql
          *
@@ -125,6 +179,27 @@ public interface BaseMapper<S extends BaseEntity> {
      * 根据id列表查询
      */
     class SelectByPrimaryKeyInSqlProvider extends BaseSqlProviderSupport {
+
+        /**
+         * 创建一个新的SelectByPrimaryKeyInSqlProvider实例。
+         * <p>
+         * 此构造函数用于初始化批量主键查询的SQL提供者。
+         * 主要用于生成根据ID列表进行批量查询的SQL语句。
+         */
+        public SelectByPrimaryKeyInSqlProvider() {
+            // this constructor is empty
+        }
+        
+        /**
+         * 生成根据主键ID列表进行批量查询的SQL语句
+         * <p>
+         * 该方法用于构建一个SELECT语句，可以同时查询多个指定ID的记录。
+         * 它将生成类似"SELECT ... FROM table WHERE id IN (1,2,3)"的SQL语句。
+         *
+         * @param params  包含查询参数的Map，其中"ids"键对应要查询的ID列表
+         * @param context MyBatis提供的上下文对象，包含Mapper接口的相关信息
+         * @return 生成的SELECT SQL语句
+         */
         public String sql(Map<String, Object> params, ProviderContext context) {
             @SuppressWarnings("unchecked")
             List<Object> ids = (List<Object>) params.get("ids");
@@ -142,10 +217,21 @@ public interface BaseMapper<S extends BaseEntity> {
      * 基类
      */
     abstract class BaseSqlProviderSupport {
+
         /**
          * key -> mapper class   value -> tableInfo
          */
         private static final Map<Class<?>, TableInfo> TABLE_CACHE = new ConcurrentHashMap<>(8);
+
+        /**
+         * 构造一个新的BaseSqlProviderSupport实例。
+         * <p>
+         * 此构造函数用于初始化一个SQL提供者。
+         * 主要用于处理通用的SQL生成逻辑。
+         */
+        protected BaseSqlProviderSupport() {
+            // this constructor is empty
+        }
 
         /**
          * 获取表信息结构

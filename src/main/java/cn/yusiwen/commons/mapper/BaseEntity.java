@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
  *     <li>更新时间</li>
  *     <li>更新者</li>
  * </ul>
- * </p>
  */
 @Data
 @EqualsAndHashCode
@@ -29,7 +28,6 @@ public class BaseEntity {
      * 主键ID
      * <p>
      * 使用 @PrimaryKey 注解标记为数据库主键
-     * </p>
      */
     @PrimaryKey
     long id;
@@ -53,5 +51,21 @@ public class BaseEntity {
      * 记录最后更新者
      */
     String updatedBy;
+
+    /**
+     * 构造一个新的基础实体对象。
+     * <p>
+     * 创建一个空的BaseEntity实例，所有字段将被初始化为默认值：
+     * <ul>
+     *     <li>id: 0</li>
+     *     <li>createdTime: null</li>
+     *     <li>createdBy: null</li>
+     *     <li>updatedTime: null</li>
+     *     <li>updatedBy: null</li>
+     * </ul>
+     */
+    public BaseEntity() {
+        // this constructor is empty
+    }
 
 }

@@ -1,5 +1,7 @@
 package cn.yusiwen.commons.mapper;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,16 +25,6 @@ import static java.util.Collections.emptySet;
  *     <li>集合元素拼接</li>
  *     <li>集合比较功能，支持对新旧集合元素的增删改分析</li>
  * </ul>
- * </p>
- *
- * <p>
- * 使用示例:
- * <pre>
- * List<String> list = CollectionUtil.newArrayList("a", "b", "c");
- * boolean empty = CollectionUtil.isEmpty(list);  // false
- * String joined = CollectionUtil.joinSeparator2String(list, ","); // "a,b,c"
- * </pre>
- * </p>
  *
  * @author Siwen Yu (yusiwen@gmail.com)
  * @since 1.0
@@ -250,8 +242,9 @@ public class CollectionUtil {
     /**
      * 列表比较结果对象
      *
-     * @param <T>
+     * @param <T> Value Type
      */
+    @Getter
     public static class CompareResult<T> {
         /**
          * 新增的对象列表
@@ -266,22 +259,18 @@ public class CollectionUtil {
          */
         private final Set<T> unmodifiedValue;
 
+        /**
+         * 创建比较结果对象
+         *
+         * @param addValue        新增的对象集合
+         * @param delValue        删除的对象集合
+         * @param unmodifiedValue 未修改的对象集合
+         */
         public CompareResult(Set<T> addValue, Set<T> delValue, Set<T> unmodifiedValue) {
             this.addValue = addValue;
             this.delValue = delValue;
             this.unmodifiedValue = unmodifiedValue;
         }
 
-        public Set<T> getDelValue() {
-            return delValue;
-        }
-
-        public Set<T> getAddValue() {
-            return addValue;
-        }
-
-        public Set<T> getUnmodifiedValue() {
-            return unmodifiedValue;
-        }
     }
 }

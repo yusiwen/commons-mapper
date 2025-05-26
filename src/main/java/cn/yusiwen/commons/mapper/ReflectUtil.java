@@ -21,7 +21,6 @@ import java.util.function.Predicate;
  *     <li>调用对象方法</li>
  *     <li>检查方法类型(equals/hashCode/toString等)</li>
  * </ul>
- * </p>
  *
  * @author Siwen Yu (yusiwen@gmail.com)
  * @since 1.0

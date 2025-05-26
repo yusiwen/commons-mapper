@@ -18,14 +18,12 @@ import java.lang.annotation.Target;
  * <ul>
  *     <li>仅限于类级别使用。</li>
  * </ul>
- * </p>
  *
  * <p>
  * 保留策略：
  * <ul>
  *     <li>运行时可用（@RetentionPolicy.RUNTIME），允许框架通过反射访问表名。</li>
  * </ul>
- * </p>
  *
  * <p>
  * 使用示例：
@@ -36,7 +34,6 @@ import java.lang.annotation.Target;
  *     private String name;
  * }
  * </pre>
- * </p>
  *
  * @author Siwen Yu (yusiwen@gmail.com)
  * @since 1.0

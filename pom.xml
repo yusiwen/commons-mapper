@@ -7,7 +7,7 @@
     <parent>
         <groupId>cn.yusiwen</groupId>
         <artifactId>java-base-parent</artifactId>
-        <version>17</version>
+        <version>18.1</version>
     </parent>
 
     <groupId>cn.yusiwen.commons</groupId>

@@ -8,11 +8,12 @@ import java.util.Map;
 /**
  * 对象工具类，提供对象类型判断、默认值处理等常用工具方法。
  *
- * <p>此工具类包含以下功能：
+ * <p>
+ * 此工具类包含以下功能：
  * <ul>
- *   <li>对象类型判断 - 判断对象是否为集合、Map、数字等类型</li>
- *   <li>默认值处理 - 在对象为null时返回默认值</li>
- *   <li>基本类型判断 - 判断对象是否为基本类型或其数组</li>
+ * <li>对象类型判断 - 判断对象是否为集合、Map、数字等类型</li>
+ * <li>默认值处理 - 在对象为null时返回默认值</li>
+ * <li>基本类型判断 - 判断对象是否为基本类型或其数组</li>
  * </ul>
  *
  * @author Siwen Yu (yusiwen@gmail.com)
@@ -20,24 +21,23 @@ import java.util.Map;
  */
 public class ObjectUtil {
 
-    private ObjectUtil() {
-    }
+    private ObjectUtil() {}
 
     /**
      * 如果obj为null，则返回默认值，不为null，则返回obj
      *
-     * @param obj          obj
+     * @param obj obj
      * @param defaultValue 默认值
-     * @param <T>          值泛型
+     * @param <T> 值泛型
      * @return obj不为null 返回obj，否则返回默认值
      */
     public static <T> T defaultIfNull(T obj, T defaultValue) {
         return obj != null ? obj : defaultValue;
     }
 
-    //---------------------------------------------------------------------
+    // ---------------------------------------------------------------------
     // 对象类型判断
-    //---------------------------------------------------------------------
+    // ---------------------------------------------------------------------
 
     /**
      * 判断对象是否为集合类型

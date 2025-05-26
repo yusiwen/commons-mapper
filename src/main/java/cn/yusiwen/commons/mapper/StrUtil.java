@@ -1,8 +1,8 @@
 package cn.yusiwen.commons.mapper;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Optional;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 字符串工具类，提供常用的字符串处理方法。
@@ -14,8 +14,7 @@ public class StrUtil {
     /**
      * 私有构造方法，禁止实例化该工具类。
      */
-    private StrUtil() {
-    }
+    private StrUtil() {}
 
     /**
      * 截取字符串的子串，长度不超过指定的最大值。
@@ -25,9 +24,7 @@ public class StrUtil {
      * @return 如果输入字符串为 null，返回 null；否则返回截取后的子串。
      */
     public static String substr(String str, int max) {
-        return Optional.ofNullable(str)
-                .map(s -> s.substring(0, Math.min(max, s.length())))
-                .orElse(null);
+        return Optional.ofNullable(str).map(s -> s.substring(0, Math.min(max, s.length()))).orElse(null);
     }
 
     /**
@@ -42,10 +39,10 @@ public class StrUtil {
 
     /**
      * 转换驼峰字符串为指定分隔符的字符串 <br/>
-     * 如：camelStr:"UserInfo"    separator:'_' <br/>
+     * 如：camelStr:"UserInfo" separator:'_' <br/>
      * return "user_info"
      *
-     * @param camelStr  驼峰字符串
+     * @param camelStr 驼峰字符串
      * @param separator 分隔符
      * @return 将驼峰字符串转换后的字符串
      */
@@ -58,7 +55,7 @@ public class StrUtil {
         for (int i = 0, len = strChar.length; i < len; i++) {
             char c = strChar[i];
             if (Character.isUpperCase(c)) {
-                //如果不是首字符，则需要添加分隔符
+                // 如果不是首字符，则需要添加分隔符
                 if (i != 0) {
                     out.append(separator);
                 }

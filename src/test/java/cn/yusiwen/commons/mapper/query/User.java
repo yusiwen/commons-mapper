@@ -1,10 +1,11 @@
 package cn.yusiwen.commons.mapper.query;
 
-import cn.yusiwen.commons.mapper.BaseEntity;
-import cn.yusiwen.commons.mapper.annotation.Table;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import cn.yusiwen.commons.mapper.BaseEntity;
+import cn.yusiwen.commons.mapper.annotation.Table;
 
 @Setter
 @Getter

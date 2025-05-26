@@ -1,6 +1,7 @@
 package cn.yusiwen.commons.mapper;
 
-import lombok.Getter;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.emptySet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,19 +12,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
+import lombok.Getter;
 
 /**
  * 集合工具类，提供对集合操作的常用方法。
  * <p>
  * 该工具类提供以下功能：
  * <ul>
- *     <li>集合判空操作</li>
- *     <li>创建ArrayList的便捷方法</li>
- *     <li>集合元素检查</li>
- *     <li>集合元素拼接</li>
- *     <li>集合比较功能，支持对新旧集合元素的增删改分析</li>
+ * <li>集合判空操作</li>
+ * <li>创建ArrayList的便捷方法</li>
+ * <li>集合元素检查</li>
+ * <li>集合元素拼接</li>
+ * <li>集合比较功能，支持对新旧集合元素的增删改分析</li>
  * </ul>
  *
  * @author Siwen Yu (yusiwen@gmail.com)
@@ -31,8 +31,7 @@ import static java.util.Collections.emptySet;
  */
 public class CollectionUtil {
 
-    private CollectionUtil() {
-    }
+    private CollectionUtil() {}
 
     /**
      * 判断集合是否为空
@@ -58,8 +57,8 @@ public class CollectionUtil {
      * 创建arraylist
      *
      * @param size size
-     * @param ele  元素
-     * @param <T>  元素类型
+     * @param ele 元素
+     * @param <T> 元素类型
      * @return ArrayList
      */
     @SafeVarargs
@@ -85,8 +84,8 @@ public class CollectionUtil {
      * 判断一个集合中是否存在指定元素
      *
      * @param collection 集合对象
-     * @param value      集合元素
-     * @param <T>        集合类型
+     * @param value 集合元素
+     * @param <T> 集合类型
      * @return true:存在 否则不存在
      */
     public static <T> boolean contains(Collection<T> collection, T value) {
@@ -97,7 +96,7 @@ public class CollectionUtil {
      * 使用分隔符将集合元素拼接为字符串
      *
      * @param collection collection
-     * @param separator  分隔符
+     * @param separator 分隔符
      * @return 字符串
      */
     public static String joinSeparator2String(Collection<?> collection, String separator) {
@@ -109,17 +108,15 @@ public class CollectionUtil {
      *
      * @param newCollection 新集合
      * @param oldCollection 旧集合
-     * @param <T>           集合元素泛型对象, 该类型必须实现Comparable接口
+     * @param <T> 集合元素泛型对象, 该类型必须实现Comparable接口
      * @return 比较结果 {@link CompareResult}
      */
-    public static <T extends Comparable<T>>
-    CompareResult<T> compare(Collection<T> newCollection, Collection<T> oldCollection) {
-        Set<T> newSet = isEmpty(newCollection)
-                ? emptySet() : newCollection instanceof Set
-                ? (Set<T>) newCollection : new HashSet<>(newCollection);
-        Set<T> oldSet = isEmpty(oldCollection)
-                ? emptySet() : oldCollection instanceof Set
-                ? (Set<T>) oldCollection : new HashSet<>(oldCollection);
+    public static <T extends Comparable<T>> CompareResult<T> compare(Collection<T> newCollection,
+        Collection<T> oldCollection) {
+        Set<T> newSet = isEmpty(newCollection) ? emptySet()
+            : newCollection instanceof Set ? (Set<T>)newCollection : new HashSet<>(newCollection);
+        Set<T> oldSet = isEmpty(oldCollection) ? emptySet()
+            : oldCollection instanceof Set ? (Set<T>)oldCollection : new HashSet<>(oldCollection);
 
         Set<T> addSet;
         Set<T> deleteSet;
@@ -155,28 +152,26 @@ public class CollectionUtil {
      *
      * @param newCollection 新集合
      * @param oldCollection 旧集合
-     * @param comparator    比较器
-     * @param <T>           集合元素泛型对象
+     * @param comparator 比较器
+     * @param <T> 集合元素泛型对象
      * @return 比较结果 {@link CompareResult}
      */
-    public static <T>
-    CompareResult<T> compare(Collection<T> newCollection, Collection<T> oldCollection, Comparator<T> comparator) {
-        List<T> newList = isEmpty(newCollection)
-                ? emptyList() : newCollection instanceof List
-                ? (List<T>) newCollection : new ArrayList<>(newCollection);
-        List<T> oldList = isEmpty(oldCollection)
-                ? emptyList() : oldCollection instanceof List
-                ? (List<T>) oldCollection : new ArrayList<>(oldCollection);
+    public static <T> CompareResult<T> compare(Collection<T> newCollection, Collection<T> oldCollection,
+        Comparator<T> comparator) {
+        List<T> newList = isEmpty(newCollection) ? emptyList()
+            : newCollection instanceof List ? (List<T>)newCollection : new ArrayList<>(newCollection);
+        List<T> oldList = isEmpty(oldCollection) ? emptyList()
+            : oldCollection instanceof List ? (List<T>)oldCollection : new ArrayList<>(oldCollection);
         return compare(newList, oldList, comparator);
     }
 
     /**
      * 根据 指定比较器 比较两个collection中哪些是新增的对象以及删除的对象和没有改变的对象
      *
-     * @param newList    新集合
-     * @param oldList    旧集合
+     * @param newList 新集合
+     * @param oldList 旧集合
      * @param comparator 比较器
-     * @param <T>        集合元素泛型对象
+     * @param <T> 集合元素泛型对象
      * @return 比较结果 {@link CompareResult}
      */
     public static <T> CompareResult<T> compare(List<T> newList, List<T> oldList, Comparator<T> comparator) {
@@ -262,8 +257,8 @@ public class CollectionUtil {
         /**
          * 创建比较结果对象
          *
-         * @param addValue        新增的对象集合
-         * @param delValue        删除的对象集合
+         * @param addValue 新增的对象集合
+         * @param delValue 删除的对象集合
          * @param unmodifiedValue 未修改的对象集合
          */
         public CompareResult(Set<T> addValue, Set<T> delValue, Set<T> unmodifiedValue) {

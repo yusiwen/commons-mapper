@@ -1,13 +1,14 @@
 package cn.yusiwen.commons.mapper.testcontainers;
 
-import lombok.extern.slf4j.Slf4j;
-import org.testcontainers.delegate.AbstractDatabaseDelegate;
-import org.testcontainers.exception.ConnectionCreationException;
-import org.testcontainers.ext.ScriptUtils;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import lombok.extern.slf4j.Slf4j;
+
+import org.testcontainers.delegate.AbstractDatabaseDelegate;
+import org.testcontainers.exception.ConnectionCreationException;
+import org.testcontainers.ext.ScriptUtils;
 
 @Slf4j
 public class CustomJdbcDatabaseDelegate extends AbstractDatabaseDelegate<Statement> {
@@ -35,26 +36,16 @@ public class CustomJdbcDatabaseDelegate extends AbstractDatabaseDelegate<Stateme
     }
 
     @Override
-    public void execute(
-            String statement,
-            String scriptPath,
-            int lineNumber,
-            boolean continueOnError,
-            boolean ignoreFailedDrops
-    ) {
+    public void execute(String statement, String scriptPath, int lineNumber, boolean continueOnError,
+        boolean ignoreFailedDrops) {
         try {
             boolean rowsAffected = getConnection().execute(statement);
             log.debug("{} returned as updateCount for SQL: {}", rowsAffected, statement);
         } catch (SQLException ex) {
             boolean dropStatement = statement.trim().toLowerCase().startsWith("drop");
             if (continueOnError || (dropStatement && ignoreFailedDrops)) {
-                log.debug(
-                        "Failed to execute SQL script statement at line {} of resource {}: {}",
-                        lineNumber,
-                        scriptPath,
-                        statement,
-                        ex
-                );
+                log.debug("Failed to execute SQL script statement at line {} of resource {}: {}", lineNumber,
+                    scriptPath, statement, ex);
             } else {
                 throw new ScriptUtils.ScriptStatementFailedException(statement, lineNumber, scriptPath, ex);
             }

@@ -1,22 +1,23 @@
 package cn.yusiwen.commons.mapper;
 
-import cn.yusiwen.commons.mapper.annotation.PrimaryKey;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import java.time.LocalDateTime;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDateTime;
+import cn.yusiwen.commons.mapper.annotation.PrimaryKey;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * 基础实体类，为所有实体类提供通用字段。
  * <p>
  * 该类包含了实体对象的基本属性，如：
  * <ul>
- *     <li>主键ID</li>
- *     <li>创建时间</li>
- *     <li>创建者</li>
- *     <li>更新时间</li>
- *     <li>更新者</li>
+ * <li>主键ID</li>
+ * <li>创建时间</li>
+ * <li>创建者</li>
+ * <li>更新时间</li>
+ * <li>更新者</li>
  * </ul>
  */
 @Data
@@ -57,11 +58,11 @@ public class BaseEntity {
      * <p>
      * 创建一个空的BaseEntity实例，所有字段将被初始化为默认值：
      * <ul>
-     *     <li>id: 0</li>
-     *     <li>createdTime: null</li>
-     *     <li>createdBy: null</li>
-     *     <li>updatedTime: null</li>
-     *     <li>updatedBy: null</li>
+     * <li>id: 0</li>
+     * <li>createdTime: null</li>
+     * <li>createdBy: null</li>
+     * <li>updatedTime: null</li>
+     * <li>updatedBy: null</li>
      * </ul>
      */
     public BaseEntity() {

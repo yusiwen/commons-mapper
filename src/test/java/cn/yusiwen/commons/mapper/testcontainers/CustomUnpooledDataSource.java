@@ -1,21 +1,21 @@
 package cn.yusiwen.commons.mapper.testcontainers;
 
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.util.MapUtil;
-
-import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.DriverPropertyInfo;
 import java.sql.SQLException;
-import java.util.Enumeration;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
+
+import javax.sql.DataSource;
+
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.util.MapUtil;
 
 public class CustomUnpooledDataSource implements DataSource {
 
@@ -32,8 +32,7 @@ public class CustomUnpooledDataSource implements DataSource {
     private Integer defaultTransactionIsolationLevel;
     private Integer defaultNetworkTimeout;
 
-    public CustomUnpooledDataSource() {
-    }
+    public CustomUnpooledDataSource() {}
 
     public CustomUnpooledDataSource(String driver, String url, String username, String password) {
         this.driver = driver;
@@ -49,7 +48,7 @@ public class CustomUnpooledDataSource implements DataSource {
     }
 
     public CustomUnpooledDataSource(ClassLoader driverClassLoader, String driver, String url, String username,
-                              String password) {
+        String password) {
         this.driverClassLoader = driverClassLoader;
         this.driver = driver;
         this.url = url;
@@ -57,7 +56,8 @@ public class CustomUnpooledDataSource implements DataSource {
         this.password = password;
     }
 
-    public CustomUnpooledDataSource(ClassLoader driverClassLoader, String driver, String url, Properties driverProperties) {
+    public CustomUnpooledDataSource(ClassLoader driverClassLoader, String driver, String url,
+        Properties driverProperties) {
         this.driverClassLoader = driverClassLoader;
         this.driver = driver;
         this.url = url;
@@ -173,8 +173,7 @@ public class CustomUnpooledDataSource implements DataSource {
      * Sets the default network timeout value to wait for the database operation to complete. See
      * {@link Connection#setNetworkTimeout(java.util.concurrent.Executor, int)}
      *
-     * @param defaultNetworkTimeout
-     *          The time in milliseconds to wait for the database operation to complete.
+     * @param defaultNetworkTimeout The time in milliseconds to wait for the database operation to complete.
      *
      * @since 3.5.2
      */
@@ -213,7 +212,7 @@ public class CustomUnpooledDataSource implements DataSource {
                     } else {
                         driverType = Resources.classForName(x);
                     }
-                    Driver driverInstance = (Driver) driverType.getDeclaredConstructor().newInstance();
+                    Driver driverInstance = (Driver)driverType.getDeclaredConstructor().newInstance();
                     DriverManager.registerDriver(new DriverProxy(driverInstance));
                     return driverInstance;
                 } catch (Exception e) {
@@ -297,4 +296,3 @@ public class CustomUnpooledDataSource implements DataSource {
     }
 
 }
-

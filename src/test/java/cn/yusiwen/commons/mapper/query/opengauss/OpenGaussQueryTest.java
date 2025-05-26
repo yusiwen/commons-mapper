@@ -1,10 +1,16 @@
 package cn.yusiwen.commons.mapper.query.opengauss;
 
-import cn.yusiwen.commons.mapper.BaseDataTest;
-import cn.yusiwen.commons.mapper.query.Mapper;
-import cn.yusiwen.commons.mapper.query.User;
-import cn.yusiwen.commons.mapper.testcontainers.CustomUnpooledDataSource;
-import cn.yusiwen.commons.mapper.testcontainers.OpenGaussContainer;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.nio.file.Paths;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.sql.DataSource;
+
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
@@ -16,15 +22,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import javax.sql.DataSource;
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.nio.file.Paths;
-import java.sql.SQLException;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import cn.yusiwen.commons.mapper.BaseDataTest;
+import cn.yusiwen.commons.mapper.query.Mapper;
+import cn.yusiwen.commons.mapper.query.User;
+import cn.yusiwen.commons.mapper.testcontainers.CustomUnpooledDataSource;
+import cn.yusiwen.commons.mapper.testcontainers.OpenGaussContainer;
 
 @Tag("OpenGaussQueryTest")
 class OpenGaussQueryTest {
@@ -36,8 +38,8 @@ class OpenGaussQueryTest {
     @BeforeAll
     static void setUp() throws SQLException, IOException {
 
-        URLClassLoader classLoader = new URLClassLoader(
-                new URL[]{Paths.get("lib/opengauss-jdbc-5.0.3.jar").toUri().toURL()},
+        URLClassLoader classLoader =
+            new URLClassLoader(new URL[] {Paths.get("lib/opengauss-jdbc-5.0.3.jar").toUri().toURL()},
                 OpenGaussQueryTest.class.getClassLoader().getParent());
         BaseDataTest.printClassSource(classLoader, "org.postgresql.Driver");
 
@@ -46,14 +48,14 @@ class OpenGaussQueryTest {
 
         Configuration configuration = new Configuration();
         DataSource dataSource = new CustomUnpooledDataSource(classLoader, container.getDriverClassName(),
-                container.getJdbcUrl(), container.getUsername(), container.getPassword());
+            container.getJdbcUrl(), container.getUsername(), container.getPassword());
         Environment environment = new Environment("test", new JdbcTransactionFactory(), dataSource);
         configuration.setEnvironment(environment);
         configuration.addMapper(Mapper.class);
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
 
         BaseDataTest.runScript(sqlSessionFactory.getConfiguration().getEnvironment().getDataSource(),
-                "cn/yusiwen/commons/mapper/db/opengauss/CreateDB.sql");
+            "cn/yusiwen/commons/mapper/db/opengauss/CreateDB.sql");
     }
 
     @AfterAll

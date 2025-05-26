@@ -1,17 +1,6 @@
 package cn.yusiwen.commons.mapper.testcontainers;
 
 import com.github.dockerjava.api.command.InspectContainerResponse;
-import lombok.NonNull;
-import lombok.SneakyThrows;
-import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.traits.LinkableContainer;
-import org.testcontainers.delegate.DatabaseDelegate;
-import org.testcontainers.ext.ScriptUtils;
-import org.testcontainers.utility.DockerImageName;
-import org.testcontainers.utility.MountableFile;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -28,12 +17,24 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import lombok.NonNull;
+import lombok.SneakyThrows;
+
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.traits.LinkableContainer;
+import org.testcontainers.delegate.DatabaseDelegate;
+import org.testcontainers.ext.ScriptUtils;
+import org.testcontainers.utility.DockerImageName;
+import org.testcontainers.utility.MountableFile;
+
 /**
  * Base class for containers that expose a JDBC connection
  */
 public abstract class CustomJdbcDatabaseContainer<SELF extends CustomJdbcDatabaseContainer<SELF>>
-        extends GenericContainer<SELF>
-        implements LinkableContainer {
+    extends GenericContainer<SELF> implements LinkableContainer {
 
     private static final Object DRIVER_LOAD_MUTEX = new Object();
 
@@ -136,7 +137,8 @@ public abstract class CustomJdbcDatabaseContainer<SELF extends CustomJdbcDatabas
     /**
      * Set time to allow for the database to start and establish an initial connection, in seconds.
      *
-     * @param connectTimeoutSeconds time to allow for the database to start and establish an initial connection in seconds
+     * @param connectTimeoutSeconds time to allow for the database to start and establish an initial connection in
+     *            seconds
      * @return self
      */
     public SELF withConnectTimeoutSeconds(int connectTimeoutSeconds) {
@@ -181,12 +183,8 @@ public abstract class CustomJdbcDatabaseContainer<SELF extends CustomJdbcDatabas
     @SneakyThrows(InterruptedException.class)
     @Override
     protected void waitUntilContainerStarted() {
-        logger()
-                .info(
-                        "Waiting for database connection to become available at {} using query '{}'",
-                        getJdbcUrl(),
-                        getTestQueryString()
-                );
+        logger().info("Waiting for database connection to become available at {} using query '{}'", getJdbcUrl(),
+            getTestQueryString());
 
         // Repeatedly try and open a connection to the DB and execute a test query
         long start = System.nanoTime();
@@ -214,12 +212,9 @@ public abstract class CustomJdbcDatabaseContainer<SELF extends CustomJdbcDatabas
         }
 
         throw new IllegalStateException(
-                String.format(
-                        "Container is started, but cannot be accessed by (JDBC URL: %s), please check container logs",
-                        this.getJdbcUrl()
-                ),
-                lastConnectionException
-        );
+            String.format("Container is started, but cannot be accessed by (JDBC URL: %s), please check container logs",
+                this.getJdbcUrl()),
+            lastConnectionException);
     }
 
     @Override
@@ -233,17 +228,19 @@ public abstract class CustomJdbcDatabaseContainer<SELF extends CustomJdbcDatabas
      *
      * @return a JDBC Driver
      */
-    public Driver getJdbcDriverInstance() throws org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException {
+    public Driver getJdbcDriverInstance()
+        throws org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException {
         synchronized (DRIVER_LOAD_MUTEX) {
             if (driver == null) {
                 try {
                     if (classLoader != null) {
-                        driver = (Driver) Class.forName(this.getDriverClassName(), true, classLoader).newInstance();
+                        driver = (Driver)Class.forName(this.getDriverClassName(), true, classLoader).newInstance();
                     } else {
-                        driver = (Driver) Class.forName(this.getDriverClassName()).newInstance();
+                        driver = (Driver)Class.forName(this.getDriverClassName()).newInstance();
                     }
                 } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-                    throw new org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException("Could not get Driver", e);
+                    throw new org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException(
+                        "Could not get Driver", e);
                 }
             }
         }
@@ -254,26 +251,27 @@ public abstract class CustomJdbcDatabaseContainer<SELF extends CustomJdbcDatabas
     /**
      * Creates a connection to the underlying containerized database instance.
      *
-     * @param queryString query string parameters that should be appended to the JDBC connection URL.
-     *                    The '?' character must be included
+     * @param queryString query string parameters that should be appended to the JDBC connection URL. The '?' character
+     *            must be included
      * @return a Connection
      * @throws SQLException if there is a repeated failure to create the connection
      */
-    public Connection createConnection(String queryString) throws SQLException, org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException {
+    public Connection createConnection(String queryString)
+        throws SQLException, org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException {
         return createConnection(queryString, new Properties());
     }
 
     /**
      * Creates a connection to the underlying containerized database instance.
      *
-     * @param queryString query string parameters that should be appended to the JDBC connection URL.
-     *                    The '?' character must be included
-     * @param info        additional properties to be passed to the JDBC driver
+     * @param queryString query string parameters that should be appended to the JDBC connection URL. The '?' character
+     *            must be included
+     * @param info additional properties to be passed to the JDBC driver
      * @return a Connection
      * @throws SQLException if there is a repeated failure to create the connection
      */
     public Connection createConnection(String queryString, Properties info)
-            throws SQLException, org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException {
+        throws SQLException, org.testcontainers.containers.JdbcDatabaseContainer.NoDriverFoundException {
         Properties properties = new Properties(info);
         properties.put("user", this.getUsername());
         properties.put("password", this.getPassword());
@@ -287,13 +285,8 @@ public abstract class CustomJdbcDatabaseContainer<SELF extends CustomJdbcDatabas
             // give up if we hit the time limit or the container stops running for some reason
             while ((System.nanoTime() - start < TimeUnit.SECONDS.toNanos(connectTimeoutSeconds)) && isRunning()) {
                 try {
-                    logger()
-                            .debug(
-                                    "Trying to create JDBC connection using {} to {} with properties: {}",
-                                    jdbcDriverInstance.getClass().getName(),
-                                    url,
-                                    properties
-                            );
+                    logger().debug("Trying to create JDBC connection using {} to {} with properties: {}",
+                        jdbcDriverInstance.getClass().getName(), url, properties);
 
                     return jdbcDriverInstance.connect(url, properties);
                 } catch (SQLException e) {
@@ -308,12 +301,12 @@ public abstract class CustomJdbcDatabaseContainer<SELF extends CustomJdbcDatabas
     }
 
     /**
-     * Template method for constructing the JDBC URL to be used for creating {@link Connection}s.
-     * This should be overridden if the JDBC URL and query string concatenation or URL string
-     * construction needs to be different to normal.
+     * Template method for constructing the JDBC URL to be used for creating {@link Connection}s. This should be
+     * overridden if the JDBC URL and query string concatenation or URL string construction needs to be different to
+     * normal.
      *
-     * @param queryString query string parameters that should be appended to the JDBC connection URL.
-     *                    The '?' character must be included
+     * @param queryString query string parameters that should be appended to the JDBC connection URL. The '?' character
+     *            must be included
      * @return a full JDBC URL including queryString
      */
     protected String constructUrlForConnection(String queryString) {
@@ -327,9 +320,8 @@ public abstract class CustomJdbcDatabaseContainer<SELF extends CustomJdbcDatabas
             throw new IllegalArgumentException("The '?' character must be included");
         }
 
-        return baseUrl.contains("?")
-                ? baseUrl + QUERY_PARAM_SEPARATOR + queryString.substring(1)
-                : baseUrl + queryString;
+        return baseUrl.contains("?") ? baseUrl + QUERY_PARAM_SEPARATOR + queryString.substring(1)
+            : baseUrl + queryString;
     }
 
     protected String constructUrlParameters(String startCharacter, String delimiter) {
@@ -340,27 +332,20 @@ public abstract class CustomJdbcDatabaseContainer<SELF extends CustomJdbcDatabas
         String urlParameters = "";
         if (!this.urlParameters.isEmpty()) {
             String additionalParameters =
-                    this.urlParameters.entrySet().stream().map(Object::toString).collect(Collectors.joining(delimiter));
+                this.urlParameters.entrySet().stream().map(Object::toString).collect(Collectors.joining(delimiter));
             urlParameters = startCharacter + additionalParameters + endCharacter;
         }
         return urlParameters;
     }
 
     @Deprecated
-    protected void optionallyMapResourceParameterAsVolume(
-            @NotNull String paramName,
-            @NotNull String pathNameInContainer,
-            @NotNull String defaultResource
-    ) {
+    protected void optionallyMapResourceParameterAsVolume(@NotNull String paramName,
+        @NotNull String pathNameInContainer, @NotNull String defaultResource) {
         optionallyMapResourceParameterAsVolume(paramName, pathNameInContainer, defaultResource, null);
     }
 
-    protected void optionallyMapResourceParameterAsVolume(
-            @NotNull String paramName,
-            @NotNull String pathNameInContainer,
-            @NotNull String defaultResource,
-            @Nullable Integer fileMode
-    ) {
+    protected void optionallyMapResourceParameterAsVolume(@NotNull String paramName,
+        @NotNull String pathNameInContainer, @NotNull String defaultResource, @Nullable Integer fileMode) {
         String resourceName = parameters.getOrDefault(paramName, defaultResource);
 
         if (resourceName != null) {
@@ -373,10 +358,8 @@ public abstract class CustomJdbcDatabaseContainer<SELF extends CustomJdbcDatabas
      * Load init script content and apply it to the database if initScriptPath is set
      */
     protected void runInitScriptIfRequired() {
-        initScriptPaths
-                .stream()
-                .filter(Objects::nonNull)
-                .forEach(path -> ScriptUtils.runInitScript(getDatabaseDelegate(), path));
+        initScriptPaths.stream().filter(Objects::nonNull)
+            .forEach(path -> ScriptUtils.runInitScript(getDatabaseDelegate(), path));
     }
 
     public void setParameters(Map<String, String> parameters) {

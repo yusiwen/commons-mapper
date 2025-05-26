@@ -1,13 +1,14 @@
 package cn.yusiwen.commons.mapper;
 
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.jdbc.ScriptRunner;
-
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.Reader;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import javax.sql.DataSource;
+
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.jdbc.ScriptRunner;
 
 public class BaseDataTest {
 
@@ -34,11 +35,7 @@ public class BaseDataTest {
             Class<?> clazz = Class.forName(className, true, classLoader);
 
             // 2. 获取类所在的 JAR 路径
-            String jarPath = clazz.getProtectionDomain()
-                    .getCodeSource()
-                    .getLocation()
-                    .toURI()
-                    .getPath();
+            String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 
             System.out.printf("类 [%s] 来源于 JAR: %s\n", className, jarPath);
 

@@ -7,11 +7,11 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 此注解用于标记类或字段，以指定它们在 JSON 映射中的特殊处理方式。
- * 适用于实体字段或类，用于声明与 JSON 数据的映射关系。
+ * 此注解用于标记类或字段，以指定它们在 JSON 映射中的特殊处理方式。 适用于实体字段或类，用于声明与 JSON 数据的映射关系。
  *
  * <p>
  * 使用示例：
+ *
  * <pre>
  * {@code @JSONColumn(fields} = {"field1", "field2"})
  * private String exampleField;
@@ -20,13 +20,13 @@ import java.lang.annotation.Target;
  * <p>
  * 注解参数：
  * <ul>
- *     <li>fields：需要映射的 JSON 字段的名称数组。</li>
+ * <li>fields：需要映射的 JSON 字段的名称数组。</li>
  * </ul>
  *
  * <p>
  * 注解目标：
  * <ul>
- *     <li>可以应用于类级别或字段级别。</li>
+ * <li>可以应用于类级别或字段级别。</li>
  * </ul>
  *
  * <p>

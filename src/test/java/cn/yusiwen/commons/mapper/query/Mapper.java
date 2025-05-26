@@ -1,9 +1,10 @@
 package cn.yusiwen.commons.mapper.query;
 
-import cn.yusiwen.commons.mapper.BaseMapper;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Select;
 
-import java.util.List;
+import cn.yusiwen.commons.mapper.BaseMapper;
 
 public interface Mapper extends BaseMapper<User> {
 

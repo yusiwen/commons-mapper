@@ -1,8 +1,13 @@
 package cn.yusiwen.commons.mapper.query.pg;
 
-import cn.yusiwen.commons.mapper.BaseDataTest;
-import cn.yusiwen.commons.mapper.query.Mapper;
-import cn.yusiwen.commons.mapper.query.User;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.sql.DataSource;
+
 import org.apache.ibatis.datasource.unpooled.UnpooledDataSource;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
@@ -16,12 +21,9 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;
 
-import javax.sql.DataSource;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import cn.yusiwen.commons.mapper.BaseDataTest;
+import cn.yusiwen.commons.mapper.query.Mapper;
+import cn.yusiwen.commons.mapper.query.User;
 
 @Tag("PgQueryTest")
 public class PgQueryTest {
@@ -38,15 +40,15 @@ public class PgQueryTest {
         container.start();
 
         Configuration configuration = new Configuration();
-        DataSource dataSource = new UnpooledDataSource(container.getDriverClassName(),
-                container.getJdbcUrl(), container.getUsername(), container.getPassword());
+        DataSource dataSource = new UnpooledDataSource(container.getDriverClassName(), container.getJdbcUrl(),
+            container.getUsername(), container.getPassword());
         Environment environment = new Environment("test", new JdbcTransactionFactory(), dataSource);
         configuration.setEnvironment(environment);
         configuration.addMapper(Mapper.class);
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
 
         BaseDataTest.runScript(sqlSessionFactory.getConfiguration().getEnvironment().getDataSource(),
-                "cn/yusiwen/commons/mapper/db/pg/CreateDB.sql");
+            "cn/yusiwen/commons/mapper/db/pg/CreateDB.sql");
     }
 
     @AfterAll

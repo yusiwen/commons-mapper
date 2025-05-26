@@ -5,7 +5,7 @@
     <parent>
         <groupId>cn.yusiwen</groupId>
         <artifactId>java-base-parent</artifactId>
-        <version>19-SNAPSHOT</version>
+        <version>19</version>
     </parent>
 
     <groupId>cn.yusiwen.commons</groupId>
@@ -46,9 +46,17 @@
 
     <properties>
         <java.version>8</java.version>
+        <java.test.version>8</java.test.version>
+        <java.release.version>8</java.release.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.release>8</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- OSGI Data -->
+        <osgi.export>cn.yusiwen.commons.mapper.*;version=${project.version};-noimport:=true</osgi.export>
+        <osgi.import>*;resolution:=optional</osgi.import>
+        <osgi.dynamicImport>*</osgi.dynamicImport>
 
         <mybatis.version>3.5.19</mybatis.version>
         <commons-collections.version>3.2.2</commons-collections.version>
@@ -194,6 +202,28 @@
                     <release>${java.version}</release>
                     <showWarnings>true</showWarnings>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestFile>${project.build.directory}/osgi/MANIFEST.MF</manifestFile>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>biz.aQute.bnd</groupId>
+                <artifactId>bnd-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>bnd-process</id>
+                        <goals>
+                            <goal>bnd-process</goal>
+                        </goals>
+                        <phase>process-classes</phase>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

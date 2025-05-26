@@ -1,7 +1,5 @@
 package cn.yusiwen.commons.mapper;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -11,15 +9,17 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * 反射工具类，提供对类、字段和方法的反射操作功能。
  * <p>
  * 主要功能包括:
  * <ul>
- *     <li>获取类的字段(包括父类继承的字段)</li>
- *     <li>获取和设置字段值</li>
- *     <li>调用对象方法</li>
- *     <li>检查方法类型(equals/hashCode/toString等)</li>
+ * <li>获取类的字段(包括父类继承的字段)</li>
+ * <li>获取和设置字段值</li>
+ * <li>调用对象方法</li>
+ * <li>检查方法类型(equals/hashCode/toString等)</li>
  * </ul>
  *
  * @author Siwen Yu (yusiwen@gmail.com)
@@ -27,8 +27,7 @@ import java.util.function.Predicate;
  */
 public final class ReflectUtil {
 
-    private ReflectUtil() {
-    }
+    private ReflectUtil() {}
 
     /**
      * 获取指定类的所有字段，包含父类继承的字段。
@@ -43,7 +42,7 @@ public final class ReflectUtil {
     /**
      * 获取指定类的所有的field,包括父类
      *
-     * @param clazz       字段所属类型
+     * @param clazz 字段所属类型
      * @param fieldFilter 字段过滤器
      * @return 符合过滤器条件的字段数组
      */
@@ -66,7 +65,7 @@ public final class ReflectUtil {
     /**
      * 对指定类的所有字段执行consumer操作
      *
-     * @param clazz    目标对象
+     * @param clazz 目标对象
      * @param consumer 对字段进行操作
      */
     public static void doWithFields(Class<?> clazz, Consumer<Field> consumer) {
@@ -77,7 +76,7 @@ public final class ReflectUtil {
      * 获取指定类中指定名称的字段，包括父类中的字段。
      *
      * @param clazz 要查找的类
-     * @param name  字段名称
+     * @param name 字段名称
      * @return 找到的字段对象，如果未找到返回null
      */
     public static Field getField(Class<?> clazz, String name) {
@@ -88,15 +87,14 @@ public final class ReflectUtil {
      * 获取指定类的指定field,包括父类
      *
      * @param clazz 字段所属类型
-     * @param name  字段名
-     * @param type  field类型
+     * @param name 字段名
+     * @param type field类型
      * @return Field对象
      */
     public static Field getField(Class<?> clazz, String name, Class<?> type) {
         while (clazz != Object.class && clazz != null) {
             for (Field field : clazz.getDeclaredFields()) {
-                if ((name == null || name.equals(field.getName()))
-                        && (type == null || type.equals(field.getType()))) {
+                if ((name == null || name.equals(field.getName())) && (type == null || type.equals(field.getType()))) {
                     return field;
                 }
             }
@@ -108,7 +106,7 @@ public final class ReflectUtil {
     /**
      * 获取字段值
      *
-     * @param field  字段
+     * @param field 字段
      * @param target 字段所属实例对象
      * @return 字段值
      */
@@ -118,15 +116,15 @@ public final class ReflectUtil {
         try {
             return field.get(target);
         } catch (Exception e) {
-            throw new IllegalStateException(String.format("获取%s对象的%s字段值错误!",
-                    target.getClass().getName(), field.getName()), e);
+            throw new IllegalStateException(
+                String.format("获取%s对象的%s字段值错误!", target.getClass().getName(), field.getName()), e);
         }
     }
 
     /**
      * 获取对象中指定field值
      *
-     * @param obj       对象
+     * @param obj 对象
      * @param fieldName 字段名
      * @return 字段值
      */
@@ -139,10 +137,10 @@ public final class ReflectUtil {
 
     /**
      * 获取指定对象中指定字段路径的值(类似js访问对象属性) <br/>
-     * 如：Product p = new Product(new User())  <br/>
+     * 如：Product p = new Product(new User()) <br/>
      * 可使用ReflectionUtils.getValueByFieldPath(p, "user.name")获取到用户的name属性
      *
-     * @param obj       取值对象
+     * @param obj 取值对象
      * @param fieldPath 字段路径(形如 user.name)
      * @return 字段value
      */
@@ -162,9 +160,9 @@ public final class ReflectUtil {
     /**
      * 设置字段值
      *
-     * @param field  字段
+     * @param field 字段
      * @param target 字段所属对象实例
-     * @param value  需要设置的值
+     * @param value 需要设置的值
      */
     @SuppressFBWarnings("EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS")
     public static void setFieldValue(Field field, Object target, Object value) {
@@ -172,8 +170,8 @@ public final class ReflectUtil {
         try {
             field.set(target, value);
         } catch (Exception e) {
-            throw new IllegalStateException(String.format("设置%s对象的%s字段值错误!",
-                    target.getClass().getName(), field.getName()), e);
+            throw new IllegalStateException(
+                String.format("设置%s对象的%s字段值错误!", target.getClass().getName(), field.getName()), e);
         }
     }
 
@@ -184,9 +182,8 @@ public final class ReflectUtil {
      */
     @SuppressFBWarnings("RFI_SET_ACCESSIBLE")
     public static void makeAccessible(Field field) {
-        if ((!Modifier.isPublic(field.getModifiers())
-                || !Modifier.isPublic(field.getDeclaringClass().getModifiers())
-                || Modifier.isFinal(field.getModifiers())) && !field.isAccessible()) {
+        if ((!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(field.getDeclaringClass().getModifiers())
+            || Modifier.isFinal(field.getModifiers())) && !field.isAccessible()) {
             field.setAccessible(true);
         }
     }
@@ -207,7 +204,7 @@ public final class ReflectUtil {
      *
      * @param method 方法对象
      * @param target 调用对象
-     * @param args   方法参数
+     * @param args 方法参数
      * @return 执行结果
      */
     @SuppressFBWarnings("EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS")
@@ -216,8 +213,8 @@ public final class ReflectUtil {
             makeAccessible(method);
             return method.invoke(target, args);
         } catch (Exception ex) {
-            throw new IllegalStateException(String.format("执行%s.%s()方法错误!",
-                    target.getClass().getName(), method.getName()), ex);
+            throw new IllegalStateException(
+                String.format("执行%s.%s()方法错误!", target.getClass().getName(), method.getName()), ex);
         }
     }
 
@@ -228,8 +225,8 @@ public final class ReflectUtil {
      */
     @SuppressFBWarnings("RFI_SET_ACCESSIBLE")
     public static void makeAccessible(Method method) {
-        if ((!Modifier.isPublic(method.getModifiers())
-                || !Modifier.isPublic(method.getDeclaringClass().getModifiers())) && !method.isAccessible()) {
+        if ((!Modifier.isPublic(method.getModifiers()) || !Modifier.isPublic(method.getDeclaringClass().getModifiers()))
+            && !method.isAccessible()) {
             method.setAccessible(true);
         }
     }

@@ -10,7 +10,7 @@
 
     <groupId>cn.yusiwen.commons</groupId>
     <artifactId>commons-mapper</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0.M1</version>
     <packaging>jar</packaging>
     <name>commons-mapper</name>
     <description>MyBatis mapper utility</description>
@@ -26,7 +26,7 @@
         <connection>scm:git:ssh://git@github.com/yusiwen/commons-mapper.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/yusiwen/commons-mapper.git</developerConnection>
         <url>https://github.com/yusiwen/commons-mapper</url>
-        <tag>HEAD</tag>
+        <tag>v1.0.0.M1</tag>
     </scm>
     <developers>
         <developer>

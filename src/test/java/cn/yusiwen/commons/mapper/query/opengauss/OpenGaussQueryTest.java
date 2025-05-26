@@ -3,8 +3,8 @@ package cn.yusiwen.commons.mapper.query.opengauss;
 import cn.yusiwen.commons.mapper.BaseDataTest;
 import cn.yusiwen.commons.mapper.query.Mapper;
 import cn.yusiwen.commons.mapper.query.User;
+import cn.yusiwen.commons.mapper.testcontainers.CustomUnpooledDataSource;
 import cn.yusiwen.commons.mapper.testcontainers.OpenGaussContainer;
-import org.apache.ibatis.datasource.unpooled.UnpooledDataSource;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
@@ -38,14 +38,14 @@ class OpenGaussQueryTest {
 
         URLClassLoader classLoader = new URLClassLoader(
                 new URL[]{Paths.get("lib/opengauss-jdbc-5.0.3.jar").toUri().toURL()},
-                OpenGaussQueryTest.class.getClassLoader());
+                OpenGaussQueryTest.class.getClassLoader().getParent());
         BaseDataTest.printClassSource(classLoader, "org.postgresql.Driver");
 
         container.withClassloader(classLoader);
         container.start();
 
         Configuration configuration = new Configuration();
-        DataSource dataSource = new UnpooledDataSource(classLoader, container.getDriverClassName(),
+        DataSource dataSource = new CustomUnpooledDataSource(classLoader, container.getDriverClassName(),
                 container.getJdbcUrl(), container.getUsername(), container.getPassword());
         Environment environment = new Environment("test", new JdbcTransactionFactory(), dataSource);
         configuration.setEnvironment(environment);

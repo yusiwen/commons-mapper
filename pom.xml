@@ -5,7 +5,7 @@
     <parent>
         <groupId>cn.yusiwen</groupId>
         <artifactId>java-base-parent</artifactId>
-        <version>18.1</version>
+        <version>19-SNAPSHOT</version>
     </parent>
 
     <groupId>cn.yusiwen.commons</groupId>
@@ -22,12 +22,6 @@
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
-    <scm>
-        <connection>scm:git:ssh://git@github.com/yusiwen/commons-mapper.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/yusiwen/commons-mapper.git</developerConnection>
-        <url>https://github.com/yusiwen/commons-mapper</url>
-        <tag>HEAD</tag>
-    </scm>
     <developers>
         <developer>
             <id>yusiwen</id>
@@ -35,6 +29,12 @@
             <email>yusiwen@gmail.com</email>
         </developer>
     </developers>
+    <scm>
+        <connection>scm:git:ssh://git@github.com/yusiwen/commons-mapper.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/yusiwen/commons-mapper.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/yusiwen/commons-mapper</url>
+    </scm>
     <issueManagement>
         <system>Github</system>
         <url>https://github.com/yusiwen/commons-mapper/issues</url>

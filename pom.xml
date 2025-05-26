@@ -10,7 +10,39 @@
 
     <groupId>cn.yusiwen.commons</groupId>
     <artifactId>commons-mapper</artifactId>
-    <version>1.0.0.M1</version>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>commons-mapper</name>
+    <description>MyBatis mapper utility</description>
+    <url>https://github.com/yusiwen/commons-mapper</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:git:ssh://git@github.com/yusiwen/commons-mapper.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/yusiwen/commons-mapper.git</developerConnection>
+        <url>https://github.com/yusiwen/commons-mapper</url>
+        <tag>HEAD</tag>
+    </scm>
+    <developers>
+        <developer>
+            <id>yusiwen</id>
+            <name>Siwen Yu</name>
+            <email>yusiwen@gmail.com</email>
+        </developer>
+    </developers>
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/yusiwen/commons-mapper/issues</url>
+    </issueManagement>
+    <ciManagement>
+        <system>travis-ci</system>
+        <url>https://travis-ci.org/yusiwen/commons-mapper</url>
+    </ciManagement>
 
     <properties>
         <java.version>8</java.version>
@@ -191,7 +223,6 @@
             </build>
         </profile>
     </profiles>
-
 
   <scm>
     <tag>v1.0.0.M1</tag>

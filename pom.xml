@@ -224,7 +224,4 @@
         </profile>
     </profiles>
 
-  <scm>
-    <tag>v1.0.0.M1</tag>
-  </scm>
 </project>

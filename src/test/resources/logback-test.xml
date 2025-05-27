@@ -26,9 +26,9 @@
             <pattern>%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
-    <logger name="org.apache.ibatis" level="error"></logger>
-    <logger name="org.apache.ibatis.logging" level="debug"></logger>
-    <logger name="org.postgresql" level="error"></logger>
+    <logger name="org.apache.ibatis" level="error"/>
+    <logger name="org.apache.ibatis.logging" level="debug"/>
+    <logger name="org.postgresql" level="error"/>
     <root level="error">
         <appender-ref ref="stdout"/>
     </root>
